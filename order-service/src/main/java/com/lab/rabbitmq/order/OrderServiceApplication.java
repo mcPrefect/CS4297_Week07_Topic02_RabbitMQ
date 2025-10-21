@@ -1,5 +1,6 @@
 package com.lab.rabbitmq.order;
 
+import com.lab.rabbitmq.order.publisher.NotificationPublisher;
 import com.lab.rabbitmq.order.publisher.PaymentPublisher;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,11 @@ public class OrderServiceApplication {
 	@Autowired
 	private PaymentPublisher paymentPublisher; // injects your PaymentPublisher bean
 
-	public static void main(String[] args) {
+    @Autowired
+    private NotificationPublisher notificationPublisher; // fanout publisher
+
+
+    public static void main(String[] args) {
 		SpringApplication.run(OrderServiceApplication.class, args);
 	}
 
@@ -20,5 +25,7 @@ public class OrderServiceApplication {
 	public void sendTestMessage() {
 		// runs automatically after app starts
 		paymentPublisher.sendPaymentRequest("Order12345");
+
+        notificationPublisher.sendNotification("Fanout Payment complete for Order12345");
 	}
 }
