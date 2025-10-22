@@ -20,6 +20,7 @@ public class OrderController {
 
     @PostMapping("/place-order")
     public ResponseEntity<String> placeOrder(@RequestBody String orderId) {
+        System.out.println("[OrderController] Received order request: " + orderId);
         // existing direct-exchange flow
         paymentPublisher.sendPaymentRequest(orderId);
 

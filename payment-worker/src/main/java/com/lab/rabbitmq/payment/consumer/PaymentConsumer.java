@@ -12,9 +12,10 @@ public class PaymentConsumer {
         System.out.println("💰 PaymentWorker received message: " + message);
 
         try {
-            Thread.sleep(2000); // simulate payment processing delay
+            Thread.sleep(3000); // simulate payment processing delay of 3 seconds
         } catch (InterruptedException e) {
             e.printStackTrace();
+            Thread.currentThread().interrupt();
         }
 
         System.out.println("✅ Payment processed successfully for: " + message);

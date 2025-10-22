@@ -1,17 +1,22 @@
 package com.lab.rabbitmq.order.publisher;
 
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class NotificationPublisher {
 
-    @Autowired
-    private RabbitTemplate rabbitTemplate;
+    private final RabbitTemplate rabbitTemplate;
+    private final String exchangeName = "fanout-notification-exchange";
+
+    public NotificationPublisher(RabbitTemplate rabbitTemplate) {
+        this.rabbitTemplate = rabbitTemplate;
+    }
 
     public void sendNotification(String message) {
-        System.out.println("[NotificationPublisher] Broadcasting: " + message);
-        rabbitTemplate.convertAndSend("fanout-notification-exchange", "", message);
+        System.out.println("[NotificationPublisher] Broadcasting notification: " + message);
+        rabbitTemplate.convertAndSend(exchangeName, "", message);  // Empty routing key for fanout exchange
     }
 }
+
+
